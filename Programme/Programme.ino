@@ -1,31 +1,23 @@
-#include "function_declarations.h"
+#include "setup.h"
 
-#define SUBPROGRAM_COUNT 6
-#define CHANGE_SUBPROGRAM_BUTTON_PIN 5
+extern const int num_subprograms;
 
-void (*setup_functions[]) ()  = {setup3, setup4, setup5, setup6, setup7, setup8};
-void (*loop_functions[]) ()  = {loop3, loop4, loop5, loop6, loop7, loop8};
+constexpr static int change_subprogram_button_pin = 5;
 
 int current_subprogram = 0;
 
-void setup() {
-  start_subprogram(0);
-  attachInterrupt(digitalPinToInterrupt(CHANGE_SUBPROGRAM_BUTTON_PIN), onChangeSubProgramButton, FALLING);
-}
-
-void loop() {
-  loop_functions[current_subprogram]();
-}
-
-void onChangeSubProgramButton() {
+static void on_change_sub_program_button() {
   current_subprogram += 1;
-  if (current_subprogram >= SUBPROGRAM_COUNT) {
+  if (current_subprogram >= num_subprograms) {
     current_subprogram = 0;
   }
 }
 
-void start_subprogram(int subprogram_index) {
-  setup_functions[subprogram_index]();
+void setup() {
+  //attachInterrupt(digitalPinToInterrupt(change_subprogram_button_pin), on_change_sub_program_button, FALLING);  
+  subprogram_setup(0);
+}
 
-  current_subprogram = subprogram_index;
+void loop() {
+  subprogram_loop(current_subprogram);
 }
