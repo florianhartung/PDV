@@ -1,4 +1,6 @@
 #include "setup.h"
+#include "util.h"
+#include "digital_pin_util.h"
 
 extern const int num_subprograms;
 
@@ -15,9 +17,11 @@ static void on_change_sub_program_button() {
 
 void setup() {
   //attachInterrupt(digitalPinToInterrupt(change_subprogram_button_pin), on_change_sub_program_button, FALLING);  
-  subprogram_setup(0);
+  subprogram_setup(2);
+  current_subprogram = 2;
 }
 
 void loop() {
   subprogram_loop(current_subprogram);
+  delay(500);
 }
