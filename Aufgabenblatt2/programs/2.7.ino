@@ -1,3 +1,15 @@
+/**
+ * Aufgabe 2.7
+ * 
+ * Erstellen Sie ein Programm für das STTS-Arduino-System,
+ * das die 8 LEDs, die mit dem rechte DIP Schalter verbunden,
+ * sind in einer Lauflichterkette nacheinander ansteuert.
+ * 
+ * DIP Schalter 1-7 legt die Anzahl der wandernden LED fest 
+ *
+ * DIP Schalter 1-8 legt die Art der Lichterkette fest (Invertierung)
+ */
+
 #include "digital_pin_util.h"
 #define LED_START_INDEX 8
 #define DELAY_BETWEEN_UPDATES 69

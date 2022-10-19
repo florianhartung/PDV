@@ -1,3 +1,12 @@
+/**
+ * Aufgabe 2.4
+ * 
+ * Erstellen Sie ein Programm für das STTS Arduino-System,
+ * das eine LED im Sekundentakt blinken lässt.
+ * 
+ * Verwenden Sie in diesem einfachen Programm die Funktion „delay(msec)“!
+ */
+
 #include "digital_pin_util.h"
 
 void setup4() {

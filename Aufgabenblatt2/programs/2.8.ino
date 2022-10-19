@@ -1,3 +1,11 @@
+/**
+ * Aufgabe 2.8
+ *
+ * Entwickeln Sie ein Programm, das abhängig vom Binär-Wort
+ * der DIP Schaltern die Helligkeit der LED ändert!
+ *
+ */
+
 #define LED_PWM_PIN 3
 #define DIP_SWITCH_START_INDEX 8
 

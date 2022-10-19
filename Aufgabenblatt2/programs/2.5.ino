@@ -1,3 +1,11 @@
+/**
+ * Aufgabe 2.5
+ * 
+ * Erstellen Sie ein Programm für das STTS-Arduino-System,
+ * das die Position eines Tasters und eine DIP-Schalters
+ * über die serielle Verbindung ausgibt.
+ */
+
 #include "util.h"
 #include "digital_pin_util.h"
 
