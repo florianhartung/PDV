@@ -42,7 +42,7 @@ void loop7() {
       led_state = (led_state >> 1) | (led_state << 7);
     }
 
-    // DIP1-81(index = 7), welcher zuständig für das Invertieren der LEDs ist, einlesen
+    // DIP1-8(index = 7), welcher zuständig für das Invertieren der LEDs ist, einlesen
     bool invert_leds = dip_read(7);
 
     // Bits aus led_state auslesen und LEDs setzen

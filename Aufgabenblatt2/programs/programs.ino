@@ -34,10 +34,10 @@ void loop() {
       unsigned long button_press_millis = millis();
       while (digitalRead(change_subprogram_button_pin));
       unsigned long button_hold_duration = millis() - button_press_millis;
-      delay(20); // Taster entprellen
-
+      delay(20);
       if (button_hold_duration >= exit_selection_mode_button_millis) {
         exit_subprogram_selection_mode();
+        subprogram_setup(current_subprogram);
         return;
       }
       step_subprogram_selection_mode();
@@ -47,6 +47,7 @@ void loop() {
   } else {
     if (digitalRead(change_subprogram_button_pin)) {
       start_subprogram_selection_mode();
+      delay(500);
       draw_subprogram_selection_mode();
       return;
     }
@@ -68,6 +69,10 @@ void start_subprogram_selection_mode() {
 void exit_subprogram_selection_mode() {
   /// TODO: EFFECTS
   for (int i = 0; i < 8; i++) {
+    led_set(i, HIGH);
+  }
+  delay(500);
+  for (int i = 0; i < 8; i++) {
     led_set(i, LOW);
   }
   pins_set(0, 7, INPUT);  // Pin modi auf Standartwert INPUT zurücksetzen
@@ -76,8 +81,7 @@ void exit_subprogram_selection_mode() {
 
 void step_subprogram_selection_mode() {
   // Nächstes Unterprogramm in Auswahl
-  current_subprogram += 1;
-  if (current_subprogram >= num_subprograms) current_subprogram = 0;
+  current_subprogram = (current_subprogram + 1) % num_subprograms;
 }
 
 void draw_subprogram_selection_mode() {

@@ -9,16 +9,15 @@
 
 #include "digital_pin_util.h"
 
+constexpr static int led_index = 7;
+
 void setup4() {
-  pins_set(0, 15, OUTPUT);
+  pinMode(led_index, OUTPUT);
 }
 
-int last_index = 0;
-
 void loop4() {
-  led_set(last_index, LOW);
-  int current_index = (last_index + 1) % 8;
-  led_set(current_index, HIGH);
-  last_index = current_index;
-  delay(50);
+  led_set(led_index, HIGH);
+  delay(1000);
+  led_set(led_index, LOW);
+  delay(1000);
 }

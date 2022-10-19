@@ -11,8 +11,8 @@ constexpr inline size_t button_count = array_size(button_indices);
 constexpr inline size_t digital_pin_count = array_size(digital_pin_indices);
 
 enum Group {
-  lower = 0b1111 << 0,
-  upper = 0b0111 << 4,
+  lower = 0xFF << 0,
+  upper = 0x7F << 4,
   all = lower | upper
 };
 
