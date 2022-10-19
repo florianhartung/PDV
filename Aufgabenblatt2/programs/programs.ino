@@ -15,24 +15,73 @@
 
 extern const int num_subprograms;
 
-constexpr static int change_subprogram_button_pin = 5;
+constexpr static int change_subprogram_button_pin = 10;
+constexpr static unsigned long exit_selection_mode_button_millis = 2000;
 
 int current_subprogram = 0;
 
-static void on_change_sub_program_button() {
-  current_subprogram += 1;
-  if (current_subprogram >= num_subprograms) {
-    current_subprogram = 0;
-  }
-}
+bool subprogram_selection_mode = true;
 
 void setup() {
-  //attachInterrupt(digitalPinToInterrupt(change_subprogram_button_pin), on_change_sub_program_button, FALLING);  
-  subprogram_setup(2);
-  current_subprogram = 2;
+  start_subprogram_selection_mode();
+  draw_subprogram_selection_mode();
 }
 
 void loop() {
-  subprogram_loop(current_subprogram);
-  delay(500);
+  if (subprogram_selection_mode) {
+    if (digitalRead(change_subprogram_button_pin)) {
+      // Zeit, welche der Taster gedrückt wird
+      unsigned long button_press_millis = millis();
+      while (digitalRead(change_subprogram_button_pin));
+      unsigned long button_hold_duration = millis() - button_press_millis;
+      delay(20); // Taster entprellen
+
+      if (button_hold_duration >= exit_selection_mode_button_millis) {
+        exit_subprogram_selection_mode();
+        return;
+      }
+      step_subprogram_selection_mode();
+      draw_subprogram_selection_mode();
+    }
+
+  } else {
+    if (digitalRead(change_subprogram_button_pin)) {
+      start_subprogram_selection_mode();
+      draw_subprogram_selection_mode();
+      return;
+    }
+    subprogram_loop(current_subprogram);
+  }
+}
+
+void start_subprogram_selection_mode() {
+  Serial.end();
+  subprogram_selection_mode = true;
+  /// TODO: check if all dips are off
+  pins_set(0, 7, OUTPUT);
+  for (int i = 0; i < 8; i++) {
+    led_set(i, HIGH);
+  }
+  while (digitalRead(change_subprogram_button_pin));
+}
+
+void exit_subprogram_selection_mode() {
+  /// TODO: EFFECTS
+  for (int i = 0; i < 8; i++) {
+    led_set(i, LOW);
+  }
+  pins_set(0, 7, INPUT);  // Pin modi auf Standartwert INPUT zurücksetzen
+  subprogram_selection_mode = false;
+}
+
+void step_subprogram_selection_mode() {
+  // Nächstes Unterprogramm in Auswahl
+  current_subprogram += 1;
+  if (current_subprogram >= num_subprograms) current_subprogram = 0;
+}
+
+void draw_subprogram_selection_mode() {
+  for (int i = 0; i < 8; i++) {
+    led_set(i, i == current_subprogram);
+  }
 }
