@@ -8,11 +8,14 @@
  * DIP Schalter 1-7 legt die Anzahl der wandernden LED fest 
  *
  * DIP Schalter 1-8 legt die Art der Lichterkette fest (Invertierung)
+ *
+ * Wenn ein Taster (hier Taster an Pin 13) gedrückt gehalten wird, ändert sich die Laufrichtung.
  */
 
 #include "digital_pin_util.h"
 #define LED_START_INDEX 8
 #define DELAY_BETWEEN_UPDATES 69
+#define DIRECTION_SWITCH_BUTTON_PIN 13
 
 uint8_t led_state = 0b10000000;
 
@@ -22,6 +25,7 @@ int last_dip7 = LOW;
 
 void setup7() {
   pins_set(6, 7, INPUT);
+  pinMode(DIRECTION_SWITCH_BUTTON_PIN, INPUT);
   pins_set(LED_START_INDEX, LED_START_INDEX + 7, OUTPUT);
 }
 
@@ -31,8 +35,12 @@ void loop7() {
   if (current_millis - last_update_millis >= DELAY_BETWEEN_UPDATES) {
     last_update_millis = current_millis;    
   
-    // Bits von led_state nach rechts rotieren
-    led_state = (led_state >> 1) | (led_state << 7);
+    // Bits von led_state nach links/rechts rotieren
+    if (digitalRead(DIRECTION_SWITCH_BUTTON_PIN)) {
+      led_state = (led_state << 1) | (led_state >> 7);
+    } else {
+      led_state = (led_state >> 1) | (led_state << 7);
+    }
 
     // DIP1-81(index = 7), welcher zuständig für das Invertieren der LEDs ist, einlesen
     bool invert_leds = dip_read(7);
