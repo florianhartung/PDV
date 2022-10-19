@@ -3,7 +3,7 @@
 
 constexpr int serial_baud_rate = 19200; 
 
-constexpr int dip_start = 2;
+constexpr int dip_start = 0;
 constexpr int dip_end = digital_pin_count - 1;
 
 const char* pin_layout_format = "D %d-%d | ";
@@ -39,9 +39,9 @@ void loop5() {
   Serial.println();
 
   for(int pin = dip_start; pin <= dip_end; pin++) {
-    //Serial.end();
+    Serial.end();
     int pin_status = dip_read(pin);
-    //Serial.begin(serial_baud_rate);
+    Serial.begin(serial_baud_rate);
     serial_writef(status_format, (pin_status ? "on" : ""));
   }
 

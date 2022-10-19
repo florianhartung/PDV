@@ -58,7 +58,7 @@ void loop() {
 void start_subprogram_selection_mode() {
   Serial.end();
   subprogram_selection_mode = true;
-  /// TODO: check if all dips are off
+  /// TODO: Make sure all dips are off
   pins_set(0, 7, OUTPUT);
   for (int i = 0; i < 8; i++) {
     led_set(i, HIGH);
@@ -67,7 +67,6 @@ void start_subprogram_selection_mode() {
 }
 
 void exit_subprogram_selection_mode() {
-  /// TODO: EFFECTS
   for (int i = 0; i < 8; i++) {
     led_set(i, HIGH);
   }
