@@ -2,7 +2,7 @@
 
 #include "util.h"
 
-constexpr inline int digital_pin_indices[] = {0, 1, 2, 3, 4, 5, 6, 7, 14, 15, 16, 17, 18, 19, 8, 9};
+constexpr inline int digital_pin_indices[] = {0, 1, 2, 3, 4, 5, 6, 7, A0, A1, A2, A3, A4, A5, 8, 9};
 
 constexpr inline int button_indices[] = { 10, 11, 12, 13 };
 
