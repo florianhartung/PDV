@@ -13,6 +13,7 @@
  */
 
 #include "digital_pin_util.h"
+
 #define LED_START_INDEX 8
 #define DELAY_BETWEEN_UPDATES 69
 #define DIRECTION_SWITCH_BUTTON_PIN 13
@@ -49,7 +50,7 @@ void loop7() {
     for (int i = 0; i < 8; i++) {
       int current_led_state = led_state & (1 << (7-i));
       if (invert_leds) {
-        current_led_state = current_led_state ? LOW : HIGH;
+        current_led_state = !current_led_state;
       }
       led_set(LED_START_INDEX + i, current_led_state);
     }

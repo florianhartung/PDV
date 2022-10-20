@@ -6,6 +6,8 @@
  *
  */
 
+#include "digital_pin_util.h"
+
 #define LED_PWM_PIN 3
 #define DIP_SWITCH_START_INDEX 8
 

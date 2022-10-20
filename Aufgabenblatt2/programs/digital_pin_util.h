@@ -2,13 +2,13 @@
 
 #include "util.h"
 
-constexpr inline int digital_pin_indices[] = {0, 1, 2, 3, 4, 5, 6, 7, A0, A1, A2, A3, A4, A5, 8, 9};
+constexpr int digital_pin_indices[] = {0, 1, 2, 3, 4, 5, 6, 7, A0, A1, A2, A3, A4, A5, 8, 9};
 
-constexpr inline int button_indices[] = { 10, 11, 12, 13 };
+constexpr int button_indices[] = { 10, 11, 12, 13 };
 
-constexpr inline size_t button_count = array_size(button_indices);
+constexpr size_t button_count = array_size(button_indices);
 
-constexpr inline size_t digital_pin_count = array_size(digital_pin_indices);
+constexpr size_t digital_pin_count = array_size(digital_pin_indices);
 
 enum Group {
   lower = 0xFF << 0,

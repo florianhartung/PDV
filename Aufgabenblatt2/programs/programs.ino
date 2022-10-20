@@ -1,9 +1,9 @@
 /**
  * Der Haupteinstiegspunkt für die Aufgaben 2.3 bis 2.8.
  * Dieses Programm ist in mehrere Unterprogramme aufteilt,
- * welche alle gleichzeitig auf den Arduino geladen werden können.
+ * welche alle gleichzeitig auf den Arduino geladen werden.
  * Es kann dann anschließend direkt am Arduino ein Unterprogramm,
- * welches gestartet werden soll ausgewählt werden.
+ * welches gestartet werden soll, ausgewählt werden.
  * 
  * Jede Aufgabe besitzt ihr eigenes Unterprogramm, welches sich
  * in der jeweiligen *.ino Datei befindet (2.3 in 2.3.ino, 2.4 in 2.4.ino, ...)
