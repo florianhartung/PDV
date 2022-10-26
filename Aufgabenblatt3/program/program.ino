@@ -1,16 +1,18 @@
+#define ENABLE_SERIAL_PLOTTER
+
 constexpr int motor_forward_pin = 3;
 constexpr int motor_backward_pin = 9;
 constexpr int direction_control_pin = 14;
 constexpr int speed_control_pin_from = 4;
 constexpr int speed_control_pin_to = 6;
 
-constexpr float acceleration = .1f/*(rad) / (s^-2)*/;
+constexpr float acceleration = .01f/*(rad)*s^-2*/;
 constexpr int motor_update_interval = 5 /*ms*/;
 
 
 struct MotorState {
-  int speed; // 0 -255
-  int target_speed;
+  float speed; // 0.0 - 255.0
+  float target_speed; // 0.0 - 255.0
 };
 
 
@@ -32,9 +34,9 @@ void setup() {
 }
 
 void loop() {
-  int new_motor_speed = read_new_motor_speed();
+  float new_motor_speed = read_new_motor_speed();
   if (motor.target_speed != new_motor_speed) {
-    motor.target_speed = new_target_speed;
+    motor.target_speed = new_motor_speed;
     force_next_update = true;
   }
 
@@ -49,7 +51,13 @@ void loop() {
     force_next_update = false;
     last_motor_update += delta_time;
 
-    /// TODO: Serial Plotter output
+#ifdef ENABLE_SERIAL_PLOTTER
+    Serial.println("Obergrenze:300\r\nUntergrenze:-300");
+
+    Serial.print("motor_speed:"); Serial.println(motor.speed);
+    Serial.print("target_speed:"); Serial.println(motor.target_speed);
+#endif //ENABLE_SERIAL_PLOTTER
+
   }
 }
 
@@ -62,18 +70,20 @@ int read_new_motor_speed() {
   }
   int new_motor_speed = (new_dip_speed * 255) / 7;
 
-  return digitalRead(direction_control_pin) ? -new_motor_speed : new_motor_speed;
+  int new_motor_speed_with_direction = digitalRead(direction_control_pin) ? -new_motor_speed : new_motor_speed;
+
+  return static_cast<float>(new_motor_speed_with_direction);
 }
 
-void update_motor_speed(MotorState motor, int delta_time) {
-    int speed_to = motor.target_speed;
-    int speed_from = motor.speed;
+void update_motor_speed(MotorState& motor, int delta_time) {
+    float speed_to = motor.target_speed;
+    float speed_from = motor.speed;
     
-    int new_speed = linear_interpolation(speed_from, speed_to, delta_time);
+    float new_speed = linear_interpolation(speed_from, speed_to, delta_time);
     motor.speed = new_speed;
 }
 
-void change_motor_speed(int speed) {
+void change_motor_speed(float speed) {
   analogWrite(motor_forward_pin, speed > 0 ? speed : 0);
   analogWrite(motor_backward_pin, speed < 0 ? -speed : 0);
 }
@@ -87,16 +97,16 @@ void change_motor_speed(int speed) {
  *
  * @returns The interpolated value
  */
-int linear_interpolation(int from, int to, int delta_time) {
-  int direction = sign(to - from);
+float linear_interpolation(float from, float to, int delta_time) {
+  float direction = sign(to - from);
 
-  int result = from + direction * (delta_time * acceleration);
+  float result = from + direction * (static_cast<float>(delta_time) * acceleration);
   
-  if (from < to && result > to || from > to && result < to) {
+  if (direction == 1 && result > to || direction == -1 && result < to) {
     result = to;
   }
 
-  return to;
+  return result;
 }
 
 template <typename T>
